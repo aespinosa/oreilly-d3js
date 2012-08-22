@@ -22,13 +22,13 @@
     draw = (data) ->
       "use strict"
       d3.select("body")
-        .append("ul")
-        .selectAll("li")
-        .data(data)
+          .append("ul")
+          .selectAll("li")
+          .data(data)
         .enter()
-        .append("li")
+          .append("li")
           .text (d) ->
-              return d.name + ": " + d.status
+                return d.name + ": " + d.status
 
       d3.selectAll("li")
         .attr("class", (d) ->
