@@ -15,10 +15,20 @@
     div.bar {
       background-color: DarkRed;
       color: white;
+      line-height: 3em;
       height: 3em
+      padding-right: 0px;
+      margin-bottom: 5px;
+      text-align: right;
+      margin-left: 22em;
+    }
+    div.label {
+      height: 3em;
       line-height: 3em;
       padding-right: 1em;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
+      float: left;
+      width: 20em;
       text-align: right;
     }
   </style>
@@ -27,21 +37,31 @@
   <script type="text/coffeescript" charset="utf-8">
     draw = (data) ->
       "use strict"
-      d3.select("body")
+      chart = d3.select("body")
           .append("div")
           .attr("class", "chart")
-          .selectAll(".bar")
+
+
+      chart.selectAll("div.line")
           .data(data.cash)
         .enter()
         .append("div")
+           .attr("class", "line")
+
+      chart.selectAll("div.line")
+        .append("div")
+          .attr("class", "label")
+          .text (d) ->
+                d.name
+
+      chart.selectAll("div.line")
+        .append("div")
           .attr("class", "bar")
-          .style("width", (d) ->
-              return d.count/100 + "px"
-          )
+          .style "width", (d) ->
+              d.count/100 + "px"
           .style("outline", "1px solid black")
-          .text((d) ->
-              return Math.round(d.count)
-          )
+          .text (d) ->
+              Math.round(d.count)
 
     d3.json "data/plaza_traffic.json", draw
   </script>
