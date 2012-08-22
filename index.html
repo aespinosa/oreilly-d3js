@@ -22,6 +22,14 @@
           .text (d) ->
               return d.name + ": " + d.status
 
+      d3.selectAll("li")
+        .style("font-weight", (d) ->
+            if (String)(d.status) == "GOOD SERVICE"
+              return "normal"
+            else
+              return "bold"
+        )
+
     d3.json "data/service_status.json", draw
   </script>
 </body>
