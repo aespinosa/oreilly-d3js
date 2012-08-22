@@ -7,6 +7,14 @@
   
   <script src="vendor/js/coffee-script.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/js/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css" media="all">
+    li.good {
+      font-weight: normal;
+    }
+    li.else {
+      font-weight: bold;
+    }
+  </style>
 
 </head>
 <body>
@@ -23,11 +31,11 @@
               return d.name + ": " + d.status
 
       d3.selectAll("li")
-        .style("font-weight", (d) ->
+        .attr("class", (d) ->
             if (String)(d.status) == "GOOD SERVICE"
-              return "normal"
+              return "good"
             else
-              return "bold"
+              return "else"
         )
 
     d3.json "data/service_status.json", draw
