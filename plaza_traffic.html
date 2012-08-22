@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <title>D3 playground</title>
+  
+  <script src="vendor/js/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/js/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+  <script type="text/coffeescript" charset="utf-8">
+    draw = (data) ->
+      "use strict"
+      d3.select("body")
+          .append("div")
+          .attr("class", "chart")
+          .selectAll(".bar")
+          .data(data.cash)
+        .enter()
+        .append("div")
+          .attr("class", "bar")
+          .style("width", (d) ->
+              return d.count/100 + "px"
+          )
+          .style("outline", "1px solid black")
+          .text((d) ->
+              return Math.round(d.count)
+          )
+
+    d3.json "data/plaza_traffic.json", draw
+  </script>
+</body>
+</html>
