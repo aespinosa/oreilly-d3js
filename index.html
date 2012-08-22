@@ -7,10 +7,22 @@
   
   <script src="vendor/js/coffee-script.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/js/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
 <body>
-<script type="text/coffeescript" charset="utf-8">
+  <script type="text/coffeescript" charset="utf-8">
+    draw = (data) ->
+      "use strict"
+      d3.select("body")
+        .append("ul")
+        .selectAll("li")
+        .data(data)
+        .enter()
+        .append("li")
+          .text (d) ->
+              return d.name + ": " + d.status
 
-</script>
+    d3.json "data/service_status.json", draw
+  </script>
 </body>
 </html>
