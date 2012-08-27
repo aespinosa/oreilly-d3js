@@ -49,8 +49,21 @@
   </div>
 
   <script type="text/coffeescript" charset="utf-8">
+    get_time_series_data = () ->
+      id = d3.select(this).attr("id")
+      ts = d3.select("#{id}_path")
+
+      if ts.empty()
+        d3.json("data/subway_wait.json", (d) ->
+          filtered_data = data.filter((d) -> return d.line_id == id)
+          draw_timeseries(filtered_data, id)
+        )
+      else
+        ts.remove()
+
     draw = (data) ->
       "use strict"
+
       container_dimensions = {width: 900, height: 400}
       margins = {top: 10, right: 20, bottom: 30, left: 60}
       chart_dimensions = {
@@ -110,6 +123,9 @@
       key_items.append("div")
         .attr("class", "key_label")
         .text((d) -> return d.line_name)
+
+      d3.selectAll(".key_line")
+        .on("click", get_time_series_data)
 
     d3.json "data/subway_wait_mean.json", draw
   </script>
