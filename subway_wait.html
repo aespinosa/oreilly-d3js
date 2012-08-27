@@ -51,6 +51,20 @@
   <script type="text/coffeescript" charset="utf-8">
     draw = (data) ->
       "use strict"
+      container_dimensions = {width: 900, height: 400}
+      margins = {top: 10, right: 20, bottom: 30, left: 60}
+      chart_dimensions = {
+          width: container_dimensions.width - margins.left - margins.right,
+          height: container_dimensions.height - margins.top - margins.bottom
+      }
+
+      chart = d3.select("#timeseries")
+        .append("svg")
+          .attr("width", container_dimensions.width)
+          .attr("height", container_dimensions.height)
+        .append("g")
+          .attr("transform", "translate(#{margins.left}, #{margins.top})")
+          .attr("id", "chart")
 
     d3.json "data/subway_wait_mean.json", draw
   </script>
