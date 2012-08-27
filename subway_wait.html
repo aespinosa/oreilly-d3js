@@ -66,6 +66,35 @@
           .attr("transform", "translate(#{margins.left}, #{margins.top})")
           .attr("id", "chart")
 
+      time_scale = d3.time.scale()
+        .range([0, chart_dimensions.width])
+        .domain([new Date(2008, 0, 1), new Date(2011, 3, 1)])
+
+      percent_scale = d3.scale.linear()
+        .range([chart_dimensions.height, 0])
+        .domain([65, 90])
+
+      time_axis = d3.svg.axis()
+        .scale(time_scale)
+      count_axis = d3.svg.axis()
+        .scale(percent_scale)
+        .orient("left")
+
+      chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0, #{chart_dimensions.height})")
+        .call(time_axis)
+      chart.append("g")
+        .attr("class", "y axis")
+        .call(count_axis)
+      d3.select(".y.axis")
+        .append("text")
+          .attr("text-anchor", "middle")
+          .text("percent on time")
+          .attr("transform", "rotate (-270, 0, 0)")
+          .attr("x", container_dimensions.height/2)
+          .attr("y", 50)
+
     d3.json "data/subway_wait_mean.json", draw
   </script>
 </body>
