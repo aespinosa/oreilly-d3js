@@ -95,6 +95,22 @@
           .attr("x", container_dimensions.height/2)
           .attr("y", 50)
 
+      key_items = d3.select("#key")
+        .selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+          .attr("class", "key_line")
+          .attr("id", (d) -> return d.line_id)
+
+      key_items.append("div")
+        .attr("id", (d) -> return "key_square_#{d.line_id}")
+        .attr("class", "key_square")
+
+      key_items.append("div")
+        .attr("class", "key_label")
+        .text((d) -> return d.line_name)
+
     d3.json "data/subway_wait_mean.json", draw
   </script>
 </body>
