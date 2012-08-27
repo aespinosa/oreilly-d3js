@@ -14,7 +14,7 @@
       stroke: black;
     }
     .axis {
-      font-size: 8-pt;
+      font-size: 8pt;
       font-family: sans-serif;
     }
     .tick {
@@ -79,6 +79,17 @@
           .attr("class", "y axis")
           .attr("transform", "translate(" + margin + ",0)")
         .call(y_axis)
+
+      d3.select(".x.axis")
+        .append("text")
+          .text("collision with injury (per million miles)")
+          .attr("x", (width / 2) - margin)
+          .attr("y", margin / 1.5)
+
+      d3.select(".y.axis")
+        .append("text")
+        .text("mean distance between failures")
+        .attr("transform", "rotate (-90, -43, 0) translate(-280)")
 
     d3.json "data/bus_perf.json", draw
   </script>
