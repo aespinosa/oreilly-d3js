@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <title>D3 playground</title>
+  
+  <script src="vendor/js/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/js/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+  <script type="text/coffeescript" charset="utf-8">
+    draw = (data) ->
+      "use strict"
+      margin = 50
+      width  = 700
+      height = 300
+
+      d3.select("body")
+        .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+        .selectAll("circle")
+        .data(data)
+        .enter()
+          .append("circle")
+
+      x_extent = d3.extent data, (d) ->
+          return d.collision_with_injury
+      x_scale = d3.scale.linear()
+        .range([margin, width-margin])
+        .domain(x_extent)
+
+      y_extent = d3.extent data, (d) ->
+          return d.dist_between_fail
+      y_scale = d3.scale.linear()
+        .range([height-margin, margin])
+        .domain(y_extent)
+
+      d3.selectAll("circle")
+        .attr("r", 5)
+        .attr("cx", (d) ->
+            return x_scale(d.collision_with_injury))
+        .attr("cy", (d) ->
+            return y_scale(d.dist_between_fail))
+
+    d3.json "data/bus_perf.json", draw
+  </script>
+</body>
+</html>
