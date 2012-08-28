@@ -91,6 +91,17 @@
               .attr("r", 5)
         )
 
+      g.selectAll("circle")
+        .on("mouseover.tooltip", (d) ->
+            d3.select("text##{d.line_id}").remove()
+            d3.select("#chart")
+              .append("text")
+              .text("#{d.late_percent} %")
+              .attr("x", time_scale(d.time) + 10)
+              .attr("y", percent_scale(d.late_percent) - 10)
+              .attr("id", d.line_id)
+        )
+
 
     get_time_series_data = () ->
       id = d3.select(this).attr("id")
