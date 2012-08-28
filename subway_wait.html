@@ -101,6 +101,16 @@
               .attr("y", percent_scale(d.late_percent) - 10)
               .attr("id", d.line_id)
         )
+      g.selectAll("circle")
+        .on("mouseout.tooltip", (d) ->
+            console.log(d)
+            d3.select("text##{d.line_id}")
+              .transition()
+              .duration(500)
+              .style("opacity", 0)
+              .attr("transform", "translate(10, -10)")
+              .remove()
+        )
 
 
     get_time_series_data = () ->
