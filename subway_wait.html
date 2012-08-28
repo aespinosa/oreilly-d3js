@@ -79,6 +79,18 @@
           .attr("cy", (d) -> percent_scale(d.late_percent))
           .attr("r", 5)
 
+      g.selectAll("circle")
+        .on("mouseover", (d) ->
+            d3.select(this)
+              .transition()
+              .attr("r", 9)
+        )
+        .on("mouseout", (d) ->
+            d3.select(this)
+              .transition()
+              .attr("r", 5)
+        )
+
 
     get_time_series_data = () ->
       id = d3.select(this).attr("id")
