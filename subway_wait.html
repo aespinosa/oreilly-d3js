@@ -77,7 +77,13 @@
         .append("circle")
           .attr("cx", (d) -> time_scale(d.time))
           .attr("cy", (d) -> percent_scale(d.late_percent))
-          .attr("r", 5)
+          .attr("r", 0)
+
+      enter_duration = 1000
+      g.selectAll("circle")
+        .transition()
+        .delay((d, i) -> i / data.length * enter_duration)
+        .attr("r", 5)
 
       g.selectAll("circle")
         .on("mouseover", (d) ->
