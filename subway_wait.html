@@ -9,6 +9,59 @@
   <script src="vendor/js/d3.v2.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="all">
+    .Line_A, .Line_C, .Line_E{
+      stroke:#2850AD;
+      fill:#2850AD;
+      background-color:#2850AD;
+    }
+    .Line_B, .Line_D, .Line_F, .Line_M {
+      stroke:#FF6319;
+      fill:#FF6319;
+      background-color:#FF6319;
+    }
+    .Line_G {
+      stroke:#6CBE45;
+      fill:#6CBE45;
+      background-color:#6CBE45;
+    }
+    .Line_Z_J {
+      stroke:#996633;
+      fill:#996633;
+      background-color:#996633;
+    }
+    .Line_L {
+      stroke:#A7A9AC;
+      fill:#A7A9AC;
+      background-color:#A7A9AC;
+    }
+    .Line_N, .Line_Q, .Line_R {
+      stroke:#FCCC0A;
+      fill:#FCCC0A;
+      background-color:#FCCC0A;
+    }
+    .Line_S {
+      stroke:#808183;
+      fill:#808183;
+      background-color:#808183;
+    }
+    .Line_1, .Line_2, .Line_3{
+      stroke:#EE352E;
+      fill:#EE352E;
+      background-color:#EE352E;
+    }
+    .Line_4, .Line_5, .Line_6{
+      stroke:#00933C;
+      fill:#00933C;
+      background-color:#00933C;
+    }
+    .Line_7 {
+      stroke:#B933AD;
+      fill:#B933AD;
+      background-color:#B933AD;
+    }
+  </style>
+
+  <style type="text/css" media="all">
     .axis path, line {
       stroke: black;
     }
@@ -41,8 +94,16 @@
     }
 
     .timeseries path {
-      stroke: black;
-      stroke-width: 0.5px;
+      stroke-width: 3px;
+    }
+    .timeseries circle {
+      stroke: white;
+    }
+    .timeseries text {
+      fill: white;
+      stroke: none;
+      font-size: 12px;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -117,6 +178,37 @@
               .attr("transform", "translate(10, -10)")
               .remove()
         )
+      g.selectAll("circle")
+        .transition()
+        .delay((d, i) -> i / data.length * enter_duration)
+        .attr("r", 5)
+        .each("end", (d, i) ->
+            if i == data.length - 1
+              add_label(this, d)
+        )
+
+      add_label = (circle, d) ->
+        d3.select(circle)
+          .transition()
+          .attr("r", 9)
+        g.append("text")
+          .text(d.line_id.split("_")[1])
+          .attr("x", time_scale(d.time))
+          .attr("y", percent_scale(d.late_percent))
+          .attr("dy", "0.35em")
+          .attr("class", "lineLabel")
+          .attr("text-anchor", "middle")
+          .attr("opacity", 0)
+          .attr("fill", "white")
+          .transition()
+              .style("opacity", 1)
+
+      g.selectAll("circle")
+        .on("mouseout", (d,i) ->
+            if i != data.length - 1
+              d3.select(this).transition().attr("r", 5)
+        )
+
 
 
     get_time_series_data = () ->
@@ -125,7 +217,7 @@
       
       if ts.empty()
         d3.json("data/subway_wait.json", (data) ->
-          filtered_data = data.filter((d) -> return d.line_id == id)
+          filtered_data = data.filter((d) -> d.line_id == id)
           draw_timeseries(filtered_data, id)
         )
       else
@@ -184,15 +276,15 @@
         .enter()
         .append("div")
           .attr("class", "key_line")
-          .attr("id", (d) -> return d.line_id)
+          .attr("id", (d) -> d.line_id)
 
       key_items.append("div")
-        .attr("id", (d) -> return "key_square_#{d.line_id}")
-        .attr("class", "key_square")
+        .attr("id", (d) -> "key_square_#{d.line_id}")
+        .attr("class", (d) -> "key_square #{d.line_id}")
 
       key_items.append("div")
         .attr("class", "key_label")
-        .text((d) -> return d.line_name)
+        .text((d) -> d.line_name)
 
       d3.selectAll(".key_line")
         .on("click", get_time_series_data)
